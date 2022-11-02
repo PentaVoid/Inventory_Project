@@ -1,0 +1,2 @@
+https://www.quora.com/How-can-I-display-a-table-from-a-database-in-a-web-application-using-Flask
+https://pythonbasics.org/flask-sqlite/

@@ -1,17 +1,46 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <title> Table </title>              
-    </head>
-    <body>
-      <table>
+
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Inventory App</h1>
+  <table id="data" class="table table-striped">
+    <thead>
+        <tr>
+          <th class="th-sm">Device ID</th>
+          <th class="th-sm">Location Status</th>
+          <th class="th-sm">Repair Status</th>
+          <th class="th-sm">Purchase Date</th>
+          <th class="th-sm">Purchase Description</th>
+          <th class="th-sm">Account</th>
+          <th class="th-sm">Cost</th>
+          <th class="th-sm">Location Fixed</th>
+          <th class="th-sm">Serial Number</th>
+          <th class="th-sm">Audit</th>
+        </tr>
+      </thead>
+      <tbody>
         {% for row in value %}
         <tr>
-          <th> {{ row[0] }}</th>
-          <th> {{ row[1] }}</th>
-          <th> {{ row[2] }}</th>
+          <td> {{ row[0] }}</td>
+          <td> {{ row[1] }}</td>
+          <td> {{ row[2] }}</td>
+          <td> {{ row[3] }}</td>
+          <td> {{ row[4] }}</td>
+          <td> {{ row[5] }}</td>
+          <td> {{ row[6] }}</td>
+          <td> {{ row[7] }}</td>
+          <td> {{ row[8] }}</td>
+          <td> {{ row[9] }}</td>
         </tr> 
         {% endfor %}
-      </table>
-    </body>
-</html>
+      </tbody>
+  </table>
+{% endblock %}
+
+{% block scripts %}
+  <script>
+    $(document).ready(function () {
+      $('#data').DataTable();
+    });
+  </script>
+{% endblock %}

@@ -49,6 +49,10 @@ conn.close()
 def index():
     return render_template('index.html', value=data)
 
+@app.route('/update.html')
+def update():
+    return render_template('update.html')
+
 
 if __name__ == "__main__":
     app.run(debug=True)

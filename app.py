@@ -45,7 +45,7 @@ cur.execute("select * from inventory")
 data = cur.fetchall()
 conn.close()
 
-@app.route('/')
+@app.route('/index.html')
 def index():
     return render_template('index.html', value=data)
 

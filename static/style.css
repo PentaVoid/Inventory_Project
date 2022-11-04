@@ -8,9 +8,9 @@ html, body { min-height: 100%; }
 body {
 	background-color: #345;
 	background-image: linear-gradient(to bottom, #0009, transparent);
-	color: #eee;
+	color: rgba(255,255,255,255);
 	font-family: 'Lato', sans-serif;
-	font-size: 70%;
+	font-size: 100%;
 	padding: 0 20px;
 	box-sizing: border-box;
 	overflow-y: hidden;
@@ -19,8 +19,8 @@ body {
 
 /* Appearance */
 .links {
-	background-color: #123;
-	background-image: linear-gradient(to bottom, #0003, transparent);
+	background-color: #345;
+	background-image: linear-gradient(to bottom, #0009, transparent);
 	border-bottom: 1px solid #0003;
 	box-shadow: 0 0 32px #0003;
 	font-size: 2em;
@@ -81,6 +81,23 @@ body {
 .links > a:last-of-type:hover ~ .line { --index: var(--items); }
 
 body {
-    background: rgb(0,0,0);
-    background: linear-gradient(90deg, rgba(0,0,0,0.6912347702752977) 0%, rgba(155,0,255,0.39991824366465334) 39%, rgba(0,196,255,0.41392384590554976) 67%);
+	background-color: rgba(118,122,138,255);
+
+}
+
+table.dataTable thead .sorting:after,
+table.dataTable thead .sorting:before,
+table.dataTable thead .sorting_asc:after,
+table.dataTable thead .sorting_asc:before,
+table.dataTable thead .sorting_asc_disabled:after,
+table.dataTable thead .sorting_asc_disabled:before,
+table.dataTable thead .sorting_desc:after,
+table.dataTable thead .sorting_desc:before,
+table.dataTable thead .sorting_desc_disabled:after,
+table.dataTable thead .sorting_desc_disabled:before {
+bottom: .5em;
+}
+
+td, th {
+	color: rgba(0,0,0,0.7);
 }

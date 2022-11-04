@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 import pandas as pd
 import sqlite3
 
@@ -43,16 +43,19 @@ cur.execute("""INSERT INTO inventory VALUES
 )
 cur.execute("select * from inventory") 
 data = cur.fetchall()
-conn.close()
 
-@app.route('/')
+@app.route('/index.html', methods=['GET', 'POST'])
 def index():
     return render_template('index.html', value=data)
 
-@app.route('/update.html')
+
+@app.route("/update.html" , methods=['GET', 'POST'])
 def update():
+    device_id_add = request.form.get('device_id')
+    print(str(device_id_add))
+    cur.execute(f"""INSERT into inventory VALUES('{device_id_add}','h','h','h','h','h','h','h','h','h');""")
+    conn.commit()
+    conn.close()
     return render_template('update.html')
-
-
 if __name__ == "__main__":
     app.run(debug=True)

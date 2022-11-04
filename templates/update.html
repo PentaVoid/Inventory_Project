@@ -4,18 +4,35 @@
 
 <h2>Create new row</h2>
 
-<form action="/action_page.php">
-  <label for="fname">First name:</label><br>
-  <input type="text" id="fname" name="fname" value="John"><br>
-  <label for="lname">Last name:</label><br>
-  <input type="text" id="lname" name="lname" value="Doe"><br><br>
-  <input type="submit" value="Submit">
-</form> 
-
+{% block content %}
+<form action="/index.html" method="POST">
+  <label>Device ID</label>
+  <input type="text" name="device_id">
+  <label>Location Status</label>
+  <input type="text" name="location_status">
+  <label>Repair Status</label>
+  <input type="text" name="repair_status">
+  <label>Purchase Date</label>
+  <input type="tel" name="purchase_date">
+  <label>Purchase Description</label>
+  <input type="text" name="purchase_description">
+  <label>Account</label>
+  <input type="text" name="account">
+  <label>Cost</label>
+  <input type="text" name="cost">
+  <label>Location Fixed</label>
+  <input type="text" name="location_fixed">
+  <label>Serial Number</label>
+  <input type="text" name="serial_number">
+  <label>Audit</label>
+  <input type="text" name="audit">
+  <button type="submit">SUBMIT</button>
+</form>
+{% endblock %}
 <br>
 <br>
 
-<h2>Choose a row you would like to update</h2>
+<h2>Update Row</h2>
 <form action="/action_page.php">
     <label for="cars">Choose a car:</label>
     <select id="cars" name="cars">

@@ -3,11 +3,9 @@
 
 {% block content %}
 <header id="header">
-  <nav class="links" style="--items: 5;">
-      <a href="index.html">Add Existing</a>
-      <a href="repair.html">Add New</a>
-      <a href="signed_in.html">Signed In</a>
-      <a href="signed_out.html">Signed Out</a>
+  <nav class="links" style="--items: 3;">
+      <a href="index.html">Inventory</a>
+      <a href="update.html">Update Table</a>
       <a href="about.html">About</a>
       <span class="line"></span>
   </nav>
@@ -17,19 +15,20 @@
  <br>
  <br>
 
-  <table id="data" class="table table-striped" style="justify-content: left;">
+  <table id="dtDynamicVerticalScrollExample" class="table table-striped table-bordered table-sm" cellspacing="0"
+  width="100%">
     <thead>
         <tr>
-          <th class="th-sm">Device ID</th>
-          <th class="th-sm">Location Status</th>
-          <th class="th-sm">Repair Status</th>
-          <th class="th-sm">Purchase Date</th>
-          <th class="th-sm">Purchase Description</th>
-          <th class="th-sm">Account</th>
-          <th class="th-sm">Cost</th>
-          <th class="th-sm">Location Fixed</th>
-          <th class="th-sm">Serial Number</th>
-          <th class="th-sm">Audit</th>
+          <th>Device ID</th>
+          <th>Location Status</th>
+          <th>Repair Status</th>
+          <th>Purchase Date</th>
+          <th>Purchase Description</th>
+          <th>Account</th>
+          <th>Cost</th>
+          <th>Location Fixed</th>
+          <th>Serial Number</th>
+          <th>Audit</th>
         </tr>
       </thead>
       <tbody>
@@ -54,7 +53,11 @@
 {% block scripts %}
   <script>
     $(document).ready(function () {
-      $('#data').DataTable();
+      $('#dtDynamicVerticalScrollExample').DataTable({
+        "scrollY": "50vh",
+        "scrollCollapse": true,
+      });
+      $('.dataTables_length').addClass('bs-select');
     });
   </script>
 {% endblock %}

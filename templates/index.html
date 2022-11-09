@@ -3,9 +3,11 @@
 
 {% block content %}
 <header id="header">
-  <nav class="links" style="--items: 3;">
-      <a href="index.html">Inventory</a>
-      <a href="update.html">Update Table</a>
+  <nav class="links" style="--items: 5;">
+      <a href="index.html">Add Existing</a>
+      <a href="update.html">Add New</a>
+      <a href="signed_in.html">Signed In</a>
+      <a href="signed_out.html">Signed Out</a>
       <a href="about.html">About</a>
       <span class="line"></span>
   </nav>
@@ -15,8 +17,7 @@
  <br>
  <br>
 
-  <table id="dtDynamicVerticalScrollExample" class="table table-striped table-bordered table-sm" cellspacing="0"
-  width="100%">
+  <table id="data" class="table table-striped" style="justify-content: left;">
     <thead>
         <tr>
           <th>Device ID</th>
@@ -53,11 +54,7 @@
 {% block scripts %}
   <script>
     $(document).ready(function () {
-      $('#dtDynamicVerticalScrollExample').DataTable({
-        "scrollY": "50vh",
-        "scrollCollapse": true,
-      });
-      $('.dataTables_length').addClass('bs-select');
+      $('#data').DataTable();
     });
   </script>
 {% endblock %}

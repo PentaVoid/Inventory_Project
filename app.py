@@ -19,8 +19,10 @@ cur.execute("""CREATE TABLE IF NOT EXISTS inventory (
    audit  TEXT NULL
 );
 """)
+conn.commit()
 
-cur.execute("""INSERT INTO inventory VALUES
+cur.execute("""INSERT INTO inventory (device_id, location_status, repair_status, purchase_date, purchase_description, account, cost, location_fixed, serial_number, audit)
+ VALUES
 ('STEMMINDS-001','repair','hello','2017-12-01','STEMSTUDENT-001','10500 - Computers - Student Use',250,'Earl Stewart Dr','NXMRWAA0045040E88C6600','Item Found'),
 ('STEMMINDS-002','','','2017-12-01','STEMSTUDENT-002','10500 - Computers - Student Use',250,'Earl Stewart Dr','NXMRWAA0045040e94d6600','Item Found'),
 ('STEMMINDS-003','','','2017-12-01','STEMSTUDENT-003','10500 - Computers - Student Use',250,'Earl Stewart Dr','NXMRWAA0045040e93a6600','Item Found'),
@@ -41,10 +43,12 @@ cur.execute("""INSERT INTO inventory VALUES
 ('STEMMINDS-018','','','2017-12-01','STEMOFFICE-8','10400 - Computers - Office Use',250,'In Closet','CND6381WV5','Item Found'),
 ('STEMMINDS-019','','','2017-12-01','STEMOFFICE-7','10400 - Computers - Office Use',250,'LAHIQA','CND6382SSS','Need to find');"""
 )
+conn.commit()
+
 cur.execute("select * from inventory") 
 data = cur.fetchall()
 
-@app.route('/index.html', methods=['GET', 'POST'])
+@app.route('/')
 def index():
     return render_template('index.html', value=data)
 

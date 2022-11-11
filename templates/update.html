@@ -4,45 +4,43 @@
 
 <h2>Create new row</h2>
 
-{% block content %}
-<form action="/index.html" method="POST">
-  <label>Device ID</label>
-  <input type="text" name="device_id">
-  <label>Location Status</label>
-  <input type="text" name="location_status">
-  <label>Repair Status</label>
-  <input type="text" name="repair_status">
-  <label>Purchase Date</label>
-  <input type="tel" name="purchase_date">
-  <label>Purchase Description</label>
-  <input type="text" name="purchase_description">
-  <label>Account</label>
-  <input type="text" name="account">
-  <label>Cost</label>
-  <input type="text" name="cost">
-  <label>Location Fixed</label>
-  <input type="text" name="location_fixed">
-  <label>Serial Number</label>
-  <input type="text" name="serial_number">
-  <label>Audit</label>
-  <input type="text" name="audit">
-  <button type="submit">SUBMIT</button>
+<form action = "{{ url_for('update') }}" method = "POST">
+  <h3>Student Information</h3>
+  Device ID<br>
+  <input type = "text" name = "d_id" /></br>
+
+  Location Status<br>
+  <input type = "text" name = "loc" /></br>
+  
+  Repair Status<br>
+  <input type = "text" name = "rep" /><br>
+
+  Purchase Date<br>
+  <input type = "text" name = "pur" /><br>
+
+  Purchase Description<br>
+  <input type = "text" name = "pur_d" /><br>
+
+  Account<br>
+  <input type = "text" name = "acc" /><br>
+
+  Cost<br>
+  <input type = "text" name = "cos" /><br>
+
+  Location Fixed<br>
+  <input type = "text" name = "loc_f" /><br>
+
+  Serial<br>
+  <input type = "text" name = "ser" /><br>
+
+  Audit<br>
+  <input type = "text" name = "aud" /><br>
+
+  <input type = "submit" value = "submit" /><br>
 </form>
-{% endblock %}
 <br>
 <br>
 
-<h2>Update Row</h2>
-<form action="/action_page.php">
-    <label for="cars">Choose a car:</label>
-    <select id="cars" name="cars">
-      <option value="volvo">Volvo</option>
-      <option value="saab">Saab</option>
-      <option value="fiat">Fiat</option>
-      <option value="audi">Audi</option>
-    </select>
-    <input type="submit">
-  </form>
   
 </body>
 </html>

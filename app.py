@@ -1,12 +1,12 @@
 from flask import Flask, render_template, request
 import pandas as pd
-import sqlite3
+import sqlite3 
 
 app = Flask(__name__)
-conn = sqlite3.connect('inventory.db')
+conn = sqlite3.connect('database.db', check_same_thread=False)
 cur = conn.cursor()
 
-cur.execute("""CREATE TABLE IF NOT EXISTS inventory (
+conn.execute("""CREATE TABLE IF NOT EXISTS inventory (
    device_id  TEXT NULL,
    location_status TEXT NULL,
    repair_status  TEXT NULL,
@@ -16,12 +16,13 @@ cur.execute("""CREATE TABLE IF NOT EXISTS inventory (
    cost  INT NULL,
    location_fixed  TEXT NULL,
    serial_number  TEXT NULL,
-   audit  TEXT NULL
+   audit  TEXT NULL,
+   UNIQUE (device_id, location_status, repair_status, purchase_date, purchase_description, account, cost, location_fixed, serial_number, audit) ON CONFLICT IGNORE
 );
 """)
 conn.commit()
 
-cur.execute("""INSERT INTO inventory (device_id, location_status, repair_status, purchase_date, purchase_description, account, cost, location_fixed, serial_number, audit)
+conn.execute("""INSERT INTO inventory (device_id, location_status, repair_status, purchase_date, purchase_description, account, cost, location_fixed, serial_number, audit)
  VALUES
 ('STEMMINDS-001','repair','hello','2017-12-01','STEMSTUDENT-001','10500 - Computers - Student Use',250,'Earl Stewart Dr','NXMRWAA0045040E88C6600','Item Found'),
 ('STEMMINDS-002','','','2017-12-01','STEMSTUDENT-002','10500 - Computers - Student Use',250,'Earl Stewart Dr','NXMRWAA0045040e94d6600','Item Found'),
@@ -45,21 +46,48 @@ cur.execute("""INSERT INTO inventory (device_id, location_status, repair_status,
 )
 conn.commit()
 
-cur.execute("select * from inventory") 
-data = cur.fetchall()
+
 
 @app.route('/')
 def index():
+    cur.execute("select * from inventory") 
+    data = cur.fetchall()
     return render_template('index.html', value=data)
 
 
-@app.route("/update.html" , methods=['GET', 'POST'])
+@app.route('/update.html')
+def u():
+   return render_template('update.html')
+
+
+@app.route('/add.html',methods = ['POST', 'GET'])
 def update():
-    device_id_add = request.form.get('device_id')
-    print(str(device_id_add))
-    cur.execute(f"""INSERT into inventory VALUES('{device_id_add}','h','h','h','h','h','h','h','h','h');""")
-    conn.commit()
-    conn.close()
-    return render_template('update.html')
+   if request.method == 'POST':
+      try:
+         d_id = request.form['d_id']
+         loc = request.form['loc']
+         rep = request.form['rep']
+         pur = request.form['pur']
+         pur_d = request.form['pur_d']
+         acc = request.form['acc']
+         cos = request.form['cos']
+         loc_f = request.form['loc_f']
+         ser = request.form['ser']
+         aud = request.form['aud']
+         
+         
+         with sqlite3.connect("database.db", check_same_thread=False) as con:
+            cur.execute("""INSERT INTO inventory (device_id, location_status, repair_status, purchase_date, purchase_description, account, cost, location_fixed, serial_number, audit)
+               VALUES (?,?,?,?,?,?,?,?,?,?)""",(d_id,loc,rep,pur,pur_d,acc,cos,loc_f,ser,aud))
+            
+            con.commit()
+            msg = "Record successfully added"
+      except:
+         con.rollback()
+         msg = "error in insert operation"
+      
+      finally:
+         return render_template("add.html")
+         conn.close()
 if __name__ == "__main__":
     app.run(debug=True)

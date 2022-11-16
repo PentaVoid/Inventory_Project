@@ -74,7 +74,24 @@ def update():
          loc_f = request.form['loc_f']
          ser = request.form['ser']
          aud = request.form['aud']
-         
+         #for delete
+         #d_id_delete = request.form['d_id_delete']
+         #loc_delete = request.form['loc_delete']
+         #ser_delete = request.form['']
+
+         ''' HTML FOR DELETE
+           <h2>Delete row</h2>
+  <p>Delete via ID, location status, or serial number(case sensitive)</p>
+  Device ID<br>
+  <br>
+
+  <input type = "text" name = "d_id_delete" /></br>
+
+  Location Status<br>
+  <input type = "text" name = "loc_delete" /></br>
+
+  Serial<br>
+  <input type = "text" name = "ser_delete" /><br>'''
          
          with sqlite3.connect("database.db", check_same_thread=False) as con:
             cur.execute("""INSERT INTO inventory (device_id, location_status, repair_status, purchase_date, purchase_description, account, cost, location_fixed, serial_number, audit)

@@ -46,13 +46,15 @@ conn.execute("""INSERT INTO inventory (device_id, location_status, repair_status
 )
 conn.commit()
 
-
+x = cur.execute("""SELECT device_id FROM inventory""")
+v = x.fetchall()
+conn.commit()
 
 @app.route('/')
 def index():
     cur.execute("select * from inventory") 
     data = cur.fetchall()
-    return render_template('index.html', value=data)
+    return render_template('index.html', value = data)
 
 
 @app.route('/update.html')
@@ -87,10 +89,14 @@ def update():
       
       finally:
          return render_template("add.html")
+
 @app.route('/delete.html')
+def d():
+   return render_template('delete.html', sm = v)
+
+@app.route('/succ_delete.html',methods = ['POST', 'GET'])
 def delete():
-   x = cur.execute("""SELECT device_id FROM inventory""")
-   x.fetchall()
-   return render_template('delete.html')
+      if request.method == 'POST':
+         return render_template("add.html")
 if __name__ == "__main__":
     app.run(debug=True)

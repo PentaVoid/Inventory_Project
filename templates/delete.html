@@ -1,9 +1,11 @@
 {% block content %}
-<table>
-        <tr>
-            <td>res</td>
-            <td>hhh</td>
-    </table>
-
-    x
+<form action = "{{ url_for('delete') }}" method = "POST">
+    <label for="cars">Choose a row to delete:</label>
+    <select id="cars" name="cars">
+    {% for i in sm %}
+        <option value=>{{ i }}</option>
+    {% endfor %}
+    </select>
+    <input type="submit">
+</form>
 {% endblock %}

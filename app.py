@@ -76,9 +76,10 @@ def update():
          loc_f = request.form['loc_f']
          ser = request.form['ser']
          aud = request.form['aud']
+         passw = request.form['pass']
          
          with conn:
-            cur.execute("""INSERT INTO inventory (device_id, location_status, repair_status, purchase_date, purchase_description, account, cost, location_fixed, serial_number, audit)
+            cur.execute(f"""INSERT INTO inventory (device_id, location_status, repair_status, purchase_date, purchase_description, account, cost, location_fixed, serial_number, audit)
                VALUES (?,?,?,?,?,?,?,?,?,?)""",(d_id,loc,rep,pur,pur_d,acc,cos,loc_f,ser,aud))
             
             conn.commit()
@@ -96,7 +97,18 @@ def d():
 
 @app.route('/succ_delete.html',methods = ['POST', 'GET'])
 def delete():
-      if request.method == 'POST':
-         return render_template("add.html")
+   if request.method == 'POST':
+      try:
+         i = request.form['h']
+         
+         with conn:
+            cur.execute(f"""DELETE FROM inventory WHERE device_id = ?""",(i))
+            
+            conn.commit()
+      except:
+         conn.rollback()
+      
+      finally:
+         return render_template("index.html")
 if __name__ == "__main__":
     app.run(debug=True)

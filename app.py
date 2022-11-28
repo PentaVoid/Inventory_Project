@@ -46,8 +46,8 @@ conn.execute("""INSERT INTO inventory (device_id, location_status, repair_status
 )
 conn.commit()
 
-x = cur.execute("""SELECT device_id FROM inventory""")
-v = x.fetchall()
+device_id_fetch = cur.execute("""SELECT device_id FROM inventory""")
+device_id_held = device_id_fetch.fetchall()
 conn.commit()
 
 @app.route('/')
@@ -57,12 +57,20 @@ def index():
     return render_template('index.html', value = data)
 
 
+@app.route('/exist.html')
+def e():
+   return render_template('exist.html', device_id_display = device_id_held)
+
+@app.route('/')
+def exist():
+   return render_template('index.html', value = data, device_id_display = device_id_held) 
+
 @app.route('/update.html')
 def u():
-   return render_template('update.html')
+   return render_template('update.html', )
 
 
-@app.route('/add.html',methods = ['POST', 'GET'])
+@app.route('/',methods = ['POST', 'GET'])
 def update():
    if request.method == 'POST':
       try:
@@ -89,26 +97,42 @@ def update():
          msg = "error in insert operation"
       
       finally:
-         return render_template("add.html")
+         global data
+         cur.execute("select * from inventory") 
+         data = cur.fetchall()
+         global device_id_fetch
+         global device_id_held
+         device_id_fetch = cur.execute("""SELECT device_id FROM inventory""")
+         device_id_held = device_id_fetch.fetchall()
+         conn.commit()
+         return render_template("index.html", value=data)
 
 @app.route('/delete.html')
 def d():
-   return render_template('delete.html', sm = v)
+   return render_template('delete.html', device_id_display = device_id_held)
 
-@app.route('/succ_delete.html',methods = ['POST', 'GET'])
+@app.route('/',methods = ['POST', 'GET'])
 def delete():
    if request.method == 'POST':
       try:
          i = request.form['h']
-         
+         print(i)
          with conn:
-            cur.execute(f"""DELETE FROM inventory WHERE device_id = ?""",(i))
-            
+            sql_delete_query = """DELETE from inventory where device_id = ?"""
+            cur.execute(sql_delete_query, (i,))
             conn.commit()
       except:
          conn.rollback()
       
       finally:
-         return render_template("index.html")
+         global data
+         cur.execute("select * from inventory") 
+         data = cur.fetchall()
+         global device_id_fetch
+         global device_id_held
+         device_id_fetch = cur.execute("""SELECT device_id FROM inventory""")
+         device_id_held = device_id_fetch.fetchall()
+         conn.commit()
+         return render_template("index.html", value = data)
 if __name__ == "__main__":
     app.run(debug=True)

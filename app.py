@@ -53,6 +53,7 @@ conn.commit()
 @app.route('/')
 def index():
     cur.execute("select * from inventory") 
+    global data
     data = cur.fetchall()
     return render_template('index.html', value = data)
 
@@ -67,7 +68,7 @@ def exist():
 
 @app.route('/update.html')
 def u():
-   return render_template('update.html', )
+   return render_template('update.html')
 
 
 @app.route('/',methods = ['POST', 'GET'])
@@ -97,7 +98,6 @@ def update():
          msg = "error in insert operation"
       
       finally:
-         global data
          cur.execute("select * from inventory") 
          data = cur.fetchall()
          global device_id_fetch
@@ -115,17 +115,16 @@ def d():
 def delete():
    if request.method == 'POST':
       try:
-         i = request.form['h']
+         i = request.form.get("h")
          print(i)
          with conn:
-            sql_delete_query = """DELETE from inventory where device_id = ?"""
+            sql_delete_query = """DELETE FROM inventory WHERE device_id=?"""
             cur.execute(sql_delete_query, (i,))
             conn.commit()
       except:
          conn.rollback()
       
       finally:
-         global data
          cur.execute("select * from inventory") 
          data = cur.fetchall()
          global device_id_fetch

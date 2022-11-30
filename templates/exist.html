@@ -1,11 +1,21 @@
-{% block content %}
-<form action = "{{ url_for('exist') }}" method = "POST">
-    <label>Choose a row to Update:</label>
-    <select name="h">
-{% for item in sm %}
-        <option type="option" value= "{{ item[0] }}">{{ item[0] }}</option>
-{% endfor %}
-    </select>
-    <input type="submit">
-</form>
-{% endblock %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Update Existing</title>
+     <meta charset="UTF-8" />
+   </head>
+   <body>
+    {% block content %}
+    <form action = "{{ url_for('exist') }}" method = "POST">
+        <label>Choose an existing row to Update:</label>
+        <select name="ok">
+    {% for item in device_id_display %}
+            <option type="option" value= "{{ item[0] }}">{{ item[0] }}</option>
+    {% endfor %}
+        </select>
+        <input type="submit">
+    </form>
+    {% endblock %}
+    
+   </body>
+</html>

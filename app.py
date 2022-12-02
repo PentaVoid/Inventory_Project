@@ -133,32 +133,28 @@ def delete():
 def e():
    return render_template('exist.html', device_id_display = device_id_held)
 
-
-@app.route('/rrr',methods = ['POST', 'GET'])
-def r():
-   print("Error")
+@app.route('/exist.html',methods = ['POST', 'GET'])
+def exist():
+   global display_exist
    if request.method == 'POST':
       try:
-         i = request.form.get("h")
-         print(i)
+         exist_row = request.form.get("exist_row")
          with conn:
-            sql_delete_query = """DELETE FROM inventory WHERE device_id=?"""
-            cur.execute(sql_delete_query, (i,))
+            cur.execute("""SELECT * FROM inventory WHERE device_id=?""", (exist_row,))
+            display_exist = cur.fetchall()
+            print(display_exist)
             conn.commit()
       except:
-         print("errpr")
          conn.rollback()
       
       finally:
          cur.execute("select * from inventory") 
          data = cur.fetchall()
-         print(data)
          global device_id_fetch
          global device_id_held
          device_id_fetch = cur.execute("""SELECT device_id FROM inventory""")
          device_id_held = device_id_fetch.fetchall()
          conn.commit()
-         return render_template("add.html", value = data)
-    
+         return render_template("exist.html", display_html_exist = display_exist, device_id_display = device_id_held)
 if __name__ == "__main__":
     app.run(debug=True)

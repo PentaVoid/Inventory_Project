@@ -8,14 +8,27 @@
     {% block content %}
     <form action = "{{ url_for('exist') }}" method = "POST">
         <label>Choose an existing row to Update:</label>
-        <select name="ok">
+        <select name="exist_row">
     {% for item in device_id_display %}
             <option type="option" value= "{{ item[0] }}">{{ item[0] }}</option>
     {% endfor %}
         </select>
         <input type="submit">
     </form>
+<br>
+    <table id="ddata" class="table table-striped" style="justify-content: left;">
+    {% for item_exist in display_html_exist %}
+    <td> {{ item_exist }}</td>
+    {% endfor %}
+    </table>
     {% endblock %}
+{% block scripts %}
+    <script>
+      $(document).ready(function () {
+        $('#ddata').DataTable();
+      });
+    </script>
+  {% endblock %}
     
    </body>
 </html>

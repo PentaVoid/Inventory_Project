@@ -7,14 +7,14 @@
    </head>
    <body>
       {% block content %}
-      <form action = "{{ url_for('exist_show') }}" method = "POST">
+      <form action = "{{ url_for('exist') }}" method = "POST">
         <label>Choose an existing row to Update:</label>
         <select name="exist_row">
       {% for item in device_id_display %}
           <option type="option" value= "{{ item[0] }}">{{ item[0] }}</option>
       {% endfor %}
         </select>
-        <input type="submit">
+        <input type = "submit" value = "submit" /><br>
       </form>
     <br>
     <table id="ddata" class="table table-striped" style="justify-content: left;">
@@ -36,6 +36,7 @@
       <tbody>
         <tr>
           <td> {{ item_exist[0] }}</td>
+          <td> {{ item_exist[1] }}</td>
           <td> {{ item_exist[2] }}</td>
           <td> {{ item_exist[3] }}</td>
           <td> {{ item_exist[4] }}</td>
@@ -44,7 +45,6 @@
           <td> {{ item_exist[7] }}</td>
           <td> {{ item_exist[8] }}</td>
           <td> {{ item_exist[9] }}</td>
-          <td> {{ item_exist[10] }}</td>
         </tr> 
     {% endfor %}
     </table>
@@ -55,41 +55,41 @@
         $('#ddata').DataTable();
       });
     </script>
-
-  <form action = "{{ url_for('exist') }}" method = "POST">
-    <h3>Update</h3>
-    Device ID<br>
-    <input type = "text" name = "update_id" /></br>
-  
-    Location Status<br>
-    <input type = "text" name = "update_loc" /></br>
+  {% for item_exist in display_html_exist %}
+    <form action = "{{ url_for('exists') }}" method = "POST">
+      Device ID<br>
+      <input type = "text" name = "update_id" value="{{ item_exist[0] }}"/></br>
     
-    Repair Status<br>
-    <input type = "text" name = "update_rep" /><br>
-  
-    Purchase Date<br>
-    <input type = "text" name = "update_pur" /><br>
-  
-    Purchase Description<br>
-    <input type = "text" name = "update_pur_d" /><br>
-  
-    Account<br>
-    <input type = "text" name = "update_acc" /><br>
-  
-    Cost<br>
-    <input type = "text" name = "update_cos" /><br>
-  
-    Location Fixed<br>
-    <input type = "text" name = "update_loc_f" /><br>
-  
-    Serial<br>
-    <input type = "text" name = "update_ser" /><br>
-  
-    Audit<br>
-    <input type = "text" name = "update_aud" /><br>
-  
-    <input type = "submit" value = "submit" /><br>
-  </form>
+      Location Status<br>
+      <input type = "text" name = "update_loc" value="{{ item_exist[1] }}"/></br>
+      
+      Repair Status<br>
+      <input type = "text" name = "update_rep" value="{{ item_exist[2] }}"/><br>
+    
+      Purchase Date<br>
+      <input type = "text" name = "update_pur" value="{{ item_exist[3] }}"/><br>
+    
+      Purchase Description<br>
+      <input type = "text" name = "update_pur_d" value="{{ item_exist[4] }}"/><br>
+    
+      Account<br>
+      <input type = "text" name = "update_acc" value="{{ item_exist[5] }}"/><br>
+    
+      Cost<br>
+      <input type = "text" name = "update_cos" value="{{ item_exist[6] }}"/><br>
+    
+      Location Fixed<br>
+      <input type = "text" name = "update_loc_f" value="{{ item_exist[7] }}"/><br>
+    
+      Serial<br>
+      <input type = "text" name = "update_ser" value="{{ item_exist[8] }}"/><br>
+    
+      Audit<br>
+      <input type = "text" name = "update_aud" value="{{ item_exist[9] }}"/><br>
+    
+      <input type = "submit" value = "submit" /><br>
+    </form>
+  {% endfor %}
   {% endblock %}
     
    </body>

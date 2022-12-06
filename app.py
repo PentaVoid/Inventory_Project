@@ -79,7 +79,7 @@ def update():
          ser = request.form['ser']
          aud = request.form['aud']
          passw = request.form['pass']
-         
+         print(d_id)
          with conn:
             cur.execute(f"""INSERT INTO inventory (device_id, location_status, repair_status, purchase_date, purchase_description, account, cost, location_fixed, serial_number, audit)
                VALUES (?,?,?,?,?,?,?,?,?,?)""",(d_id,loc,rep,pur,pur_d,acc,cos,loc_f,ser,aud))
@@ -132,14 +132,14 @@ def e():
    return render_template('exist.html', device_id_display = device_id_held)
 
 @app.route('/exist.html',methods = ['POST', 'GET'])
-def exist_show():
-   global display_exist
+def exist():
    if request.method == 'POST':
       try:
          global exist_row
-         exist_row = request.form.get("exist_row")
+         exist_row =  request.form.get("exist_row")
          with conn:
             cur.execute("""SELECT * FROM inventory WHERE device_id=?""", (exist_row,))
+            global display_exist
             display_exist = cur.fetchall()
             conn.commit()
       except:
@@ -153,51 +153,49 @@ def exist_show():
          device_id_fetch = cur.execute("""SELECT device_id FROM inventory""")
          device_id_held = device_id_fetch.fetchall()
          conn.commit()
-         return render_template("exist.html", display_html_exist = display_exist, device_id_display = device_id_held)
+         return render_template("exist.html", display_html_exist = display_exist, device_id_display = device_id_held, value = data)
 
 
-@app.route('/v',methods = ['POST', 'GET'])
-def exist():
-   if request.method == 'POST':
-      try:
-         update_id = request.form['d_id']
-         update_loc = request.form['loc']
-         update_rep = request.form['rep']
-         update_pur = request.form['pur']
-         update_pur_d = request.form['pur_d']
-         update_acc = request.form['acc']
-         update_cos = request.form['cos']
-         update_loc_f = request.form['loc_f']
-         update_ser = request.form['ser']
-         update_aud = request.form.get("update_aud")
-         update_passw = request.form['pass']
-         print(update_aud)
          
-         with conn:
-            cur.execute(f"""INSERT INTO inventory (device_id, location_status, repair_status, purchase_date, purchase_description, account, cost, location_fixed, serial_number, audit)
-               VALUES (?,?,?,?,?,?,?,?,?,?)""",("d","t","f","v","f","acc","cos","loc_f","ser","aud"))
-            #cur.execute(f"""INSERT INTO inventory (device_id, location_status, repair_status, purchase_date, purchase_description, account, cost, location_fixed, serial_number, audit)
-             #  VALUES (?,?,?,?,?,?,?,?,?,?)""",(d_id,loc,rep,pur,pur_d,acc,cos,loc_f,ser,aud))
-            #''' UPDATE tasks
-              #SET priority = ? ,
-               #   begin_date = ? ,
-                #  end_date = ?
-              #WHERE id = ?'''
-            conn.commit()
-            msg = "Record successfully added"
-      except:
-         conn.rollback()
-         msg = "error in insert operation"
-      
-      finally:
-         cur.execute("select * from inventory") 
-         data = cur.fetchall()
-         global device_id_fetch
-         global device_id_held
-         device_id_fetch = cur.execute("""SELECT device_id FROM inventory""")
-         device_id_held = device_id_fetch.fetchall()
-         conn.commit()
-         return render_template("send.html", value = data)
 
+@app.route('/exist_complete.html',methods = ['POST', 'GET'])
+def exists():
+      if request.method == 'POST':
+         try:
+            update_id = request.form['update_id']
+            update_loc = request.form['update_loc']
+            update_rep = request.form['update_rep']
+            update_pur = request.form['update_pur']
+            update_pur_d = request.form['update_pur_d']
+            update_acc = request.form['update_acc']
+            update_cos = request.form['update_cos']
+            update_loc_f = request.form['update_loc_f']
+            update_ser = request.form['update_ser']
+            update_aud = request.form.get("update_aud")
+            print(update_id)
+            print(update_acc)
+            with conn:
+               sql_update_query =''' UPDATE inventory
+               SET device_id = ?, 
+               location_status = ? 
+               WHERE device_id = ? 
+               '''
+               v = exist_row
+               params = (update_id, update_loc, v)
+               cur.execute(sql_update_query, params)
+               conn.commit()
+         except:
+            print("error")
+         finally:
+            global display_exist
+            display_exist = cur.fetchall()
+            cur.execute("select * from inventory") 
+            data = cur.fetchall()
+            global device_id_fetch
+            global device_id_held
+            device_id_fetch = cur.execute("""SELECT device_id FROM inventory""")
+            device_id_held = device_id_fetch.fetchall()
+            conn.commit()
+            return render_template("add.html", display_html_exist = display_exist, device_id_display = device_id_held, value = data)
 if __name__ == "__main__":
     app.run(debug=True)

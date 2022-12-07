@@ -10,6 +10,16 @@
     <div class="container">
       <h1>{{ title }}</h1>
       <hr>
+      <header id="header">
+        <nav class="links" style="--items: 5;">
+            <a href="index.html">Home</a>
+            <a href="exist.html">Add Existing</a>
+            <a href="update.html">Add New</a>
+            <a href="delete.html">Delete Row</a>
+            <a href="https://www.stemminds.com/" target="_blank"><img src="/static/logo.png" height="60px"></a>
+            <span class="line"></span>
+        </nav>
+      </header>
       {% block content %}{% endblock %}
     </div>
     <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

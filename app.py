@@ -2,10 +2,12 @@ from flask import Flask, render_template, request
 import pandas as pd
 import sqlite3 
 
+#initialize flask app, database and main database variables
 app = Flask(__name__)
 conn = sqlite3.connect('database.db', check_same_thread=False)
 cur = conn.cursor()
 
+#Create table headers
 conn.execute("""CREATE TABLE IF NOT EXISTS inventory (
    device_id  TEXT NULL,
    location_status TEXT NULL,
@@ -22,6 +24,7 @@ conn.execute("""CREATE TABLE IF NOT EXISTS inventory (
 """)
 conn.commit()
 
+#Base table values (STEM-MINDS 1-19)
 conn.execute("""INSERT INTO inventory (device_id, location_status, repair_status, purchase_date, purchase_description, account, cost, location_fixed, serial_number, audit)
  VALUES
 ('STEMMINDS-001','repair','hello','2017-12-01','STEMSTUDENT-001','10500 - Computers - Student Use',250,'Earl Stewart Dr','NXMRWAA0045040E88C6600','Item Found'),
@@ -46,6 +49,7 @@ conn.execute("""INSERT INTO inventory (device_id, location_status, repair_status
 )
 conn.commit()
 
+#define data holds all table data, and device_id_held holds device id data
 global data
 cur.execute("select * from inventory") 
 data = cur.fetchall()
@@ -53,18 +57,20 @@ device_id_fetch = cur.execute("""SELECT device_id FROM inventory""")
 device_id_held = device_id_fetch.fetchall()
 conn.commit()
 
-@app.route('/')
+#home page
+@app.route('/index.html')
 def index():
     cur.execute("select * from inventory") 
     data = cur.fetchall()
     return render_template('index.html', value = data)
 
+#update page
 @app.route('/update.html')
 def u():
    return render_template('update.html')
 
-
-@app.route('/',methods = ['POST', 'GET'])
+#update form to allow new table values
+@app.route('/index.html',methods = ['POST', 'GET'])
 def update():
    if request.method == 'POST':
       try:
@@ -91,6 +97,7 @@ def update():
          msg = "error in insert operation"
       
       finally:
+         #update data variables with new changes
          cur.execute("select * from inventory") 
          data = cur.fetchall()
          global device_id_fetch
@@ -100,18 +107,20 @@ def update():
          conn.commit()
          return render_template("index.html", value = data)
 
+#delete page
 @app.route('/delete.html')
 def d():
    return render_template('delete.html', device_id_display = device_id_held)
 
+#delete form to delete rows
 @app.route('/r',methods = ['POST', 'GET'])
 def delete():
    if request.method == 'POST':
       try:
-         i = request.form.get("h")
+         delete_row = request.form.get("delete_row")
          with conn:
             sql_delete_query = """DELETE FROM inventory WHERE device_id=?"""
-            cur.execute(sql_delete_query, (i,))
+            cur.execute(sql_delete_query, (delete_row,))
             conn.commit()
       except:
          conn.rollback()
@@ -124,13 +133,15 @@ def delete():
          device_id_fetch = cur.execute("""SELECT device_id FROM inventory""")
          device_id_held = device_id_fetch.fetchall()
          conn.commit()
-         return render_template("add.html", value = data)
+         return render_template("time_space.html", value = data)
 
 
+#update existing page
 @app.route('/exist.html')
 def e():
    return render_template('exist.html', device_id_display = device_id_held)
 
+#existing form to display chosen row
 @app.route('/exist.html',methods = ['POST', 'GET'])
 def exist():
    if request.method == 'POST':
@@ -157,7 +168,7 @@ def exist():
 
 
          
-
+#existing form to update chosen row
 @app.route('/exist_complete.html',methods = ['POST', 'GET'])
 def exists():
       if request.method == 'POST':
@@ -177,11 +188,19 @@ def exists():
             with conn:
                sql_update_query =''' UPDATE inventory
                SET device_id = ?, 
-               location_status = ? 
+               location_status = ?,
+               repair_status = ?,
+               purchase_date = ?,
+               purchase_description = ?,
+               account = ?,
+               cost = ?,
+               location_fixed = ?,
+               serial_number = ?,
+               audit = ?
                WHERE device_id = ? 
                '''
                v = exist_row
-               params = (update_id, update_loc, v)
+               params = (update_id, update_loc, update_rep, update_pur, update_pur_d, update_acc, update_cos, update_loc_f, update_ser, update_aud, v)
                cur.execute(sql_update_query, params)
                conn.commit()
          except:
@@ -196,6 +215,6 @@ def exists():
             device_id_fetch = cur.execute("""SELECT device_id FROM inventory""")
             device_id_held = device_id_fetch.fetchall()
             conn.commit()
-            return render_template("add.html", display_html_exist = display_exist, device_id_display = device_id_held, value = data)
+            return render_template("time_space.html", display_html_exist = display_exist, device_id_display = device_id_held, value = data)
 if __name__ == "__main__":
     app.run(debug=True)

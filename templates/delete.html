@@ -1,12 +1,30 @@
+{% extends "base.html" %}
 {% block content %}
-<form action = "{{ url_for('delete') }}" method = "POST">
-    <label>Choose a row to delete:</label>
-    <select name="h">
-{% for item in device_id_display %}
-        <option type="option" value= "{{ item[0] }}">{{ item[0] }}</option>
-{% endfor %}
-    </select>
-    <input type="submit">
-</form>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    
+    <form action="{{ url_for('delete') }}" method="POST">
+        <label><h2>Choose a row to delete:</h2></label>
+        <br>
+        <select name="delete_row">
+            {% for item in device_id_display %}
+            <option type="option" value="{{ item[0] }}">{{ item[0] }}</option>
+            {% endfor %}
+        </select>
+        <input type="submit">
+    </form> 
+</body>
+</html>
 {% endblock %}
-

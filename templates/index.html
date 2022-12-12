@@ -8,23 +8,21 @@
  <br>
  <br>
 
-<div class="d" style="height: 1000px; padding: 10px; overflow: auto; overflow-x:hidden;">
+ <div class="tableFixHead">
   <table id="data" class="table table-striped" style="justify-content: center;">
     <thead>
-        <tr>
-          <th>Device ID</th>
-          <th>Location Status</th>
-          <th>Repair Status</th>
-          <th>Purchase Date</th>
-          <th>Purchase Description</th>
-          <th>Account</th>
-          <th>Cost</th>
-          <th>Location Fixed</th>
-          <th>Serial Number</th>
-          <th>Audit</th>
-        </tr>
-      </thead>
-      <tbody>
+        <th>Device ID</th>
+        <th>Location Status</th>
+        <th>Repair Status</th>
+        <th>Purchase Date</th>
+        <th>Purchase Description</th>
+        <th>Account</th>
+        <th>Cost</th>
+        <th>Location Fixed</th>
+        <th>Serial Number</th>
+        <th>Audit</th>
+    </thead>
+    <tbody>
         {% for row in value %}
         <tr>
           <td> {{ row[0] }}</td>
@@ -39,7 +37,7 @@
           <td> {{ row[9] }}</td>
         </tr> 
         {% endfor %}
-      </tbody>
+    </tbody>
   </table>
 </div>
 {% endblock %}
